@@ -1,0 +1,83 @@
+<title>지구 온 초등신문</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap" />
+<style>
+  :root{--ground:#FBF6EC;--surface:#FFFFFF;--surface-2:#F4EDDC;--ink:#26333B;--ink-soft:#43535C;--muted:#837A67;--line:#E6DBC3;--sky:#2C7CB8;--sky-tint:#E3F0F9;--leaf:#35935F;--leaf-tint:#E1F0E7;--sun:#C7860F;--sun-tint:#FAEEC9;--indigo:#5A5FAE;--indigo-tint:#E8E8F7;--rose:#C7546C;--rose-tint:#FBE4E9;--coral:#D4623A;--img-panel:#EAF4FB;}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ground:#141E26;--surface:#1E2C36;--surface-2:#26343E;--ink:#EFE7D6;--ink-soft:#CBC3B2;--muted:#A79E8B;--line:#33414B;--sky:#63AEE0;--sky-tint:#1B3A4C;--leaf:#64C08F;--leaf-tint:#1D3A2D;--sun:#EEBB57;--sun-tint:#3A3320;--indigo:#A0A4E9;--indigo-tint:#2B2C49;--rose:#EA8CA0;--rose-tint:#3D2830;--coral:#EC8A5F;}}
+  :root[data-theme="dark"]{--ground:#141E26;--surface:#1E2C36;--surface-2:#26343E;--ink:#EFE7D6;--ink-soft:#CBC3B2;--muted:#A79E8B;--line:#33414B;--sky:#63AEE0;--sky-tint:#1B3A4C;--leaf:#64C08F;--leaf-tint:#1D3A2D;--sun:#EEBB57;--sun-tint:#3A3320;--indigo:#A0A4E9;--indigo-tint:#2B2C49;--rose:#EA8CA0;--rose-tint:#3D2830;--coral:#EC8A5F;}
+  *{box-sizing:border-box;} html,body{height:100%;}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:"Gowun Dodum","Apple SD Gothic Neo","Malgun Gothic",sans-serif;line-height:1.8;}
+  .deck{position:relative;width:100%;height:100dvh;overflow:hidden;background:var(--ground);touch-action:pan-y;user-select:none;}
+  .topbar{position:absolute;top:0;left:0;right:0;height:4px;background:var(--line);z-index:6;}
+  .topbar span{display:block;height:100%;width:12.5%;background:var(--sky);transition:width .35s ease;}
+  .counter{position:absolute;top:12px;right:16px;z-index:6;font-family:"Jua",sans-serif;font-size:.78rem;color:var(--muted);background:var(--ground);padding:0 .3rem;}
+  .track{display:flex;height:100%;transition:transform .35s ease;}
+  .slide{min-width:100%;height:100%;overflow-y:auto;touch-action:pan-y;display:flex;flex-direction:column;padding:3rem clamp(1rem,5vw,3.5rem) 3.4rem;}
+  .slide-inner{margin:auto;width:100%;max-width:1000px;}
+  .cover .slide-inner{max-width:720px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:.5rem;}
+  .cover svg{width:clamp(92px,22vw,150px);height:auto;}
+  .cover h1{font-family:"Jua",sans-serif;font-weight:400;font-size:clamp(2.3rem,9vw,4.4rem);line-height:1.05;margin:.6rem 0 0;color:var(--ink);}
+  .cover .date{font-family:"Jua",sans-serif;font-size:clamp(1rem,3.4vw,1.4rem);color:var(--sky);margin-top:.4rem;}
+  .cover .by{font-size:.95rem;color:var(--muted);}
+  .cover .hint{margin-top:1.6rem;font-size:.9rem;color:var(--ink-soft);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:.4rem 1rem;}
+  .slide-tag{font-family:"Jua",sans-serif;font-size:.8rem;color:var(--muted);margin-bottom:.9rem;}
+  .slide-tag .no{color:var(--sky);}
+  .story{display:grid;grid-template-columns:1fr;gap:1.4rem;align-items:center;}
+  @media (min-width:780px){.story{grid-template-columns:minmax(0,45%) 1fr;gap:2.4rem;}}
+  .fig{background:var(--img-panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;}
+  .fig svg{display:block;width:100%;height:auto;}
+  .badges{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.7rem;}
+  .badge{font-size:.78rem;font-family:"Jua",sans-serif;padding:.16rem .66rem;border-radius:999px;white-space:nowrap;}
+  .b-sky{background:var(--sky-tint);color:var(--sky);} .b-leaf{background:var(--leaf-tint);color:var(--leaf);} .b-sun{background:var(--sun-tint);color:var(--sun);} .b-indigo{background:var(--indigo-tint);color:var(--indigo);} .b-rose{background:var(--rose-tint);color:var(--rose);}
+  .story h2{font-family:"Jua",sans-serif;font-weight:400;font-size:clamp(1.45rem,4.2vw,2.4rem);line-height:1.32;margin:0 0 .7rem;color:var(--ink);}
+  .story p.body{margin:0;font-size:clamp(1rem,2.3vw,1.18rem);line-height:1.9;color:var(--ink-soft);}
+  .story b{color:var(--ink);font-weight:700;}
+  .dict{margin-top:1rem;background:var(--surface-2);border-radius:12px;padding:.85rem 1rem;font-size:.92rem;line-height:1.75;color:var(--ink-soft);}
+  .dict .dict-label,.talk .talk-label{display:block;font-family:"Jua",sans-serif;font-size:.78rem;letter-spacing:.03em;margin-bottom:.15rem;}
+  .dict .dict-label{color:var(--sky);} .dict b{color:var(--ink);}
+  .dict .hj{display:block;margin:.1rem 0 .6rem;font-size:.83rem;color:var(--muted);}
+  .dict .hj:last-child{margin-bottom:0;}
+  .talk{margin-top:.9rem;border-left:3px solid var(--coral);padding-left:.85rem;font-size:.98rem;line-height:1.7;color:var(--ink);}
+  .talk .talk-label{color:var(--coral);}
+  .closing .slide-inner{max-width:640px;}
+  .closing h2{font-family:"Jua",sans-serif;font-weight:400;font-size:clamp(1.5rem,5vw,2.2rem);margin:0 0 1rem;color:var(--ink);}
+  .closing ol{margin:0 0 1.6rem;padding-left:1.3rem;font-size:1.02rem;line-height:1.9;color:var(--ink-soft);}
+  .closing .src{font-size:.82rem;color:var(--muted);line-height:1.75;border-top:1px solid var(--line);padding-top:1rem;}
+  .closing .see-you{margin-top:1.4rem;font-family:"Jua",sans-serif;color:var(--sky);font-size:1.1rem;}
+  .dots{position:absolute;left:0;right:0;bottom:14px;display:flex;gap:8px;justify-content:center;z-index:5;}
+  .dot{width:8px;height:8px;padding:0;border:none;border-radius:50%;background:var(--line);cursor:pointer;}
+  .dot[aria-current="true"]{background:var(--sky);width:22px;border-radius:4px;}
+  @media (prefers-reduced-motion:reduce){.track,.topbar span{transition:none;}}
+  @media print{.deck{height:auto;overflow:visible;}.track{display:block;transform:none !important;}.slide{height:auto;page-break-after:always;overflow:visible;}.dots,.counter,.topbar{display:none;}}
+</style>
+<div class="deck" id="deck">
+  <div class="topbar"><span id="bar"></span></div>
+  <div class="counter" id="counter">1 / 8</div>
+  <div class="track" id="track">
+    <section class="slide cover"><div class="slide-inner">
+      <svg viewBox="0 0 100 100" role="img" aria-label="지구 그림"><circle cx="50" cy="50" r="44" fill="#4FA3D6" stroke="#26333B" stroke-width="4"/><path d="M18 38c8 4 12-2 20 1s10 9 18 7 12-10 22-7c2 6 3 12 2 19-10 3-15 12-25 12-8 0-11-7-19-8s-13 4-19-1c-3-7-3-15-1-22 0-1 1-1 2-1z" fill="#4FBB77"/><path d="M60 22c6 1 12 4 16 9-5 2-9 0-13 2s-6 7-11 5-4-9 0-12 5-4 8-4z" fill="#4FBB77"/><ellipse cx="37" cy="30" rx="9" ry="5" fill="#EAF4FB" opacity="0.85"/><ellipse cx="66" cy="66" rx="11" ry="5" fill="#EAF4FB" opacity="0.85"/><circle cx="50" cy="50" r="44" fill="none" stroke="#26333B" stroke-width="4"/></svg>
+      <h1>지구 온 초등신문</h1>
+      <div class="date">2026년 9월 10일 목요일 · 제1호</div>
+      <div class="by">펴낸이 · 지구 온쌤</div>
+      <div class="hint">화면을 옆으로 넘기거나 아래 점을 눌러 보세요</div>
+    </div></section>
+    <section class="slide"><div class="slide-inner">
+      <div class="slide-tag">지구 온 초등신문 · 9월 10일 &nbsp;|&nbsp; <span class="no">우리나라 소식 ①</span></div>
+      <div class="story"><div class="fig"><svg viewBox="0 0 400 240" role="img" aria-label="기사 그림"><rect width="400" height="240" fill="#EAF4FB"/></svg></div>
+      <div class="text"><div class="badges"><span class="badge b-sky">우리나라</span><span class="badge b-indigo">분야</span></div>
+      <h2>기사 제목</h2><p class="body">기사 본문.</p>
+      <div class="dict"><span class="dict-label">낱말 사전</span><b>용어1</b> : 풀이<span class="hj">한자풀이 · 漢字語(한자어) : 漢(한나라 한) 字(글자 자) 語(말씀 어)</span><b>용어2</b> : 풀이<span class="hj">한자풀이 · ...(...) : ...</span></div>
+      <div class="talk"><span class="talk-label">이야기 나눠요</span>질문</div></div></div>
+    </div></section>
+    <!-- 슬라이드 2~6: 위 구조로 5장 더. 번호는 우리나라 소식 ②, 우리나라 소식 ③, 세계 소식 ①(badge b-leaf 세계), 세계 소식 ②, 세계 소식 ③. -->
+    <section class="slide closing"><div class="slide-inner">
+      <h2>오늘의 신문, 이렇게 읽어요</h2>
+      <ol><li>머리기사를 소리 내어 함께 읽기</li><li>'낱말 사전'으로 어려운 말 짚어 보기</li><li>'이야기 나눠요' 질문으로 3분 토론</li><li>오늘 가장 기억에 남는 한 문장을 공책에 쓰기</li></ol>
+      <div class="src">출처 · (오늘 출처 목록). 모든 기사는 YYYY년 M월 D일 기준, 초등 고학년 눈높이로 간추렸으며 사진 대신 그림을 넣었습니다.</div>
+      <div class="see-you">내일 아침에 또 만나요! — 지구 온쌤</div>
+    </div></section>
+  </div>
+  <div class="dots" id="dots"></div>
+</div>
+<script>
+(function(){var track=document.getElementById("track");var slides=Array.prototype.slice.call(track.children);var total=slides.length;var bar=document.getElementById("bar");var counter=document.getElementById("counter");var dotsWrap=document.getElementById("dots");var deck=document.getElementById("deck");var index=0;var reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;slides.forEach(function(_,i){var b=document.createElement("button");b.className="dot";b.type="button";b.addEventListener("click",function(){go(i);});dotsWrap.appendChild(b);});var dots=Array.prototype.slice.call(dotsWrap.children);function paint(o){var base=-index*100;track.style.transform=o?"translateX(calc("+base+"% + "+o+"px))":"translateX("+base+"%)";bar.style.width=((index+1)/total*100)+"%";counter.textContent=(index+1)+" / "+total;dots.forEach(function(d,i){d.setAttribute("aria-current",i===index?"true":"false");});}function go(i){index=Math.max(0,Math.min(total-1,i));track.style.transition=reduce?"none":"";paint(0);slides[index].scrollTop=0;}window.addEventListener("keydown",function(e){if(e.key==="ArrowRight"||e.key==="PageDown"){go(index+1);e.preventDefault();}else if(e.key==="ArrowLeft"||e.key==="PageUp"){go(index-1);e.preventDefault();}else if(e.key===" "&&!e.shiftKey){go(index+1);e.preventDefault();}});var sx=0,sy=0,drag=false,dec=false,hor=false;function begin(x,y,target){if(target&&target.closest&&target.closest(".dot"))return;sx=x;sy=y;drag=true;dec=false;hor=false;track.style.transition="none";}function move(x,y,ev){if(!drag)return false;var dx=x-sx;var dy=y-sy;if(!dec){if(Math.abs(dx)>6||Math.abs(dy)>6){dec=true;hor=Math.abs(dx)>Math.abs(dy);}else return false;}if(!hor)return false;if(ev&&ev.cancelable)ev.preventDefault();if((index===0&&dx>0)||(index===total-1&&dx<0))dx*=0.3;paint(dx);return true;}function finish(x){if(!drag)return;drag=false;track.style.transition=reduce?"none":"";if(!hor){paint(0);return;}var dx=x-sx;if(dx<=-40)go(index+1);else if(dx>=40)go(index-1);else paint(0);}deck.addEventListener("touchstart",function(e){begin(e.touches[0].clientX,e.touches[0].clientY,e.target);},{passive:true});deck.addEventListener("touchmove",function(e){if(move(e.touches[0].clientX,e.touches[0].clientY,e))e.preventDefault();},{passive:false});deck.addEventListener("touchend",function(e){finish((e.changedTouches&&e.changedTouches[0]?e.changedTouches[0].clientX:sx));});deck.addEventListener("touchcancel",function(){drag=false;track.style.transition="";paint(0);});deck.addEventListener("pointerdown",function(e){if(e.pointerType==="touch")return;begin(e.clientX,e.clientY,e.target);});deck.addEventListener("pointermove",function(e){if(e.pointerType==="touch")return;move(e.clientX,e.clientY,e);});deck.addEventListener("pointerup",function(e){if(e.pointerType==="touch")return;finish(e.clientX);});deck.addEventListener("pointercancel",function(e){if(e.pointerType==="touch")return;drag=false;track.style.transition="";paint(0);});window.addEventListener("resize",function(){track.style.transition="none";paint(0);requestAnimationFrame(function(){track.style.transition="";});});paint(0);})();
+</script>
