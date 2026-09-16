@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>쉐도잉 스튜디오</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app" id="app">
+    <aside class="sidebar">
+      <div class="brand">🎧 쉐도잉 스튜디오</div>
+
+      <div class="streak-box" id="streakBox">
+        <div class="streak-num" id="streakNum">0</div>
+        <div class="streak-label">일 연속 학습</div>
+      </div>
+
+      <button class="btn btn-primary btn-block" id="addLessonBtn">+ 새 영상 추가</button>
+
+      <div class="lesson-list" id="lessonList"></div>
+    </aside>
+
+    <main class="main">
+      <div id="emptyState" class="empty-state">
+        <h1>오늘의 쉐도잉을 시작해 보세요</h1>
+        <p>왼쪽의 <b>+ 새 영상 추가</b> 버튼을 눌러 유튜브 쇼츠 링크와 스크립트를 등록하면,<br/>
+        문장별 재생 · 번역 · 녹음 · 발음 분석을 한 화면에서 연습할 수 있어요.</p>
+      </div>
+
+      <div id="lessonView" class="lesson-view hidden">
+        <header class="lesson-header">
+          <div>
+            <h1 id="lessonTitle">-</h1>
+            <div class="lesson-meta" id="lessonMeta"></div>
+          </div>
+          <div class="lesson-actions">
+            <button class="btn btn-ghost" id="editLessonBtn">수정</button>
+            <button class="btn btn-ghost danger" id="deleteLessonBtn">삭제</button>
+          </div>
+        </header>
+
+        <div class="player-row">
+          <div class="player-wrap">
+            <div id="ytPlayer"></div>
+          </div>
+          <div class="player-tools">
+            <div class="tool-group">
+              <label>재생 속도</label>
+              <div class="rate-buttons" id="rateButtons">
+                <button data-rate="0.5">0.5x</button>
+                <button data-rate="0.75">0.75x</button>
+                <button data-rate="1" class="active">1x</button>
+              </div>
+            </div>
+            <div class="tool-group">
+              <button class="btn btn-secondary btn-block" id="calibrateToggle">⏱ 구간 설정 모드</button>
+            </div>
+            <div class="tool-group calibrate-panel hidden" id="calibratePanel">
+              <p class="hint">영상을 재생하면서, 각 문장이 <b>시작되는 순간</b> 아래 버튼을 누르거나 스페이스바를 누르세요.</p>
+              <div class="calibrate-current" id="calibrateCurrent">문장 1 대기 중</div>
+              <button class="btn btn-primary btn-block" id="calibratePlayBtn">▶ 재생하고 탭 시작</button>
+              <button class="btn btn-block" id="calibrateMarkBtn" disabled>다음 문장 시작 (Space)</button>
+              <button class="btn btn-ghost btn-block" id="calibrateResetBtn">전체 초기화</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-grid">
+          <section class="sentence-panel">
+            <div class="panel-head">
+              <h2>스크립트</h2>
+              <label class="toggle"><input type="checkbox" id="showTranslation" checked/> 번역 보기</label>
+            </div>
+            <div id="sentenceList" class="sentence-list"></div>
+          </section>
+
+          <section class="vocab-panel">
+            <h2>주요 단어</h2>
+            <div id="vocabList" class="vocab-list"></div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 영상 추가/수정 모달 -->
+  <div class="modal-backdrop hidden" id="lessonModalBackdrop">
+    <div class="modal">
+      <h2 id="modalTitle">새 영상 추가</h2>
+      <label>유튜브 링크 또는 영상 ID</label>
+      <input type="text" id="inputUrl" placeholder="https://www.youtube.com/shorts/XXXXXXXXXXX" />
+
+      <label>제목</label>
+      <input type="text" id="inputTitle" placeholder="예: 카페에서 주문하기" />
+
+      <label>레벨 (선택)</label>
+      <input type="text" id="inputLevel" placeholder="예: 초급 / 중급" />
+
+      <label>스크립트 (한 줄에 문장 하나. "영어 | 한국어 번역" 형식 권장)</label>
+      <textarea id="inputScript" rows="8" placeholder="Hi, can I get a large iced americano? | 안녕하세요, 아이스 아메리카노 큰 사이즈 하나 주시겠어요?
+Sure, anything else for you today? | 네, 오늘 다른 건 필요 없으세요?"></textarea>
+
+      <label>주요 단어 (선택, "단어 - 뜻" 형식)</label>
+      <textarea id="inputVocab" rows="4" placeholder="americano - 아메리카노
+anything else - 그 밖에 다른 것"></textarea>
+
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="modalCancel">취소</button>
+        <button class="btn btn-primary" id="modalSave">저장</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script src="app.js"></script>
+</body>
+</html>
