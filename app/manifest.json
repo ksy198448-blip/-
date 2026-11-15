@@ -1,0 +1,14 @@
+{
+  "name": "집정리 플래너",
+  "short_name": "집정리",
+  "description": "정리 순서 체크리스트와 사진 기반 정리 방법 추천",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f6f2",
+  "theme_color": "#4f8a6e",
+  "lang": "ko",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#4f8a6e" />
+  <title>집정리 플래너</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icon.svg" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="top">
+    <h1>🏠 집정리 플래너</h1>
+    <div class="progress">
+      <div class="bar"><div id="progress-fill"></div></div>
+      <span id="progress-text">0%</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- 정리 순서 -->
+    <section id="tab-plan" class="tab active">
+      <p class="hint">위에서부터 순서대로 하나씩 정리해 보세요. 단계를 눌러 펼치고, 끝난 항목은 체크!</p>
+      <ol id="plan-list" class="plan-list"></ol>
+      <button id="add-step" class="btn secondary wide">＋ 단계 추가</button>
+    </section>
+
+    <!-- 사진 분석 -->
+    <section id="tab-photo" class="tab">
+      <div class="card">
+        <h2>📷 사진으로 정리 방법 받기</h2>
+        <p class="hint">정리하고 싶은 공간을 찍어 올리면 어떻게 정리하면 좋을지 알려드려요.</p>
+        <label class="upload" for="photo-input">
+          <img id="photo-preview" alt="" hidden />
+          <span id="upload-label">사진 찍기 / 고르기</span>
+        </label>
+        <input id="photo-input" type="file" accept="image/*" capture="environment" hidden />
+        <input id="photo-note" type="text" placeholder="(선택) 고민 적기 — 예: 아이 장난감이 너무 많아요" />
+        <button id="analyze-btn" class="btn wide" disabled>정리 방법 알려줘</button>
+        <p id="photo-status" class="status" hidden></p>
+      </div>
+      <div id="result"></div>
+      <h3 class="section-title">지난 분석 기록</h3>
+      <div id="history" class="history"></div>
+    </section>
+
+    <!-- 설정 -->
+    <section id="tab-settings" class="tab">
+      <div class="card">
+        <h2>🔑 Claude API 키</h2>
+        <p class="hint">사진 분석에 필요해요. <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">console.anthropic.com</a>에서 발급받을 수 있어요. 키는 이 기기에만 저장됩니다.</p>
+        <input id="api-key" type="password" placeholder="sk-ant-..." autocomplete="off" />
+        <label class="field-label" for="model">모델</label>
+        <select id="model">
+          <option value="claude-opus-5-5">Claude Opus 5.5 (가장 정확함)</option>
+          <option value="claude-sonnet-5-5">Claude Sonnet 5.5 (더 저렴함)</option>
+          <option value="claude-haiku-5-5">Claude Haiku 5.5 (가장 빠르고 저렴함)</option>
+        </select>
+        <button id="save-settings" class="btn wide">저장</button>
+        <p id="settings-status" class="status" hidden></p>
+      </div>
+      <div class="card">
+        <h2>🗂️ 데이터</h2>
+        <button id="export-data" class="btn secondary wide">내 계획 내보내기 (JSON)</button>
+        <button id="reset-plan" class="btn danger wide">정리 순서 기본값으로 되돌리기</button>
+      </div>
+    </section>
+  </main>
+
+  <nav class="tabs">
+    <button data-tab="plan" class="active">📋<span>정리 순서</span></button>
+    <button data-tab="photo">📷<span>사진 분석</span></button>
+    <button data-tab="settings">⚙️<span>설정</span></button>
+  </nav>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
