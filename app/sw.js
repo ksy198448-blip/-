@@ -1,5 +1,5 @@
 // 앱 화면 파일만 캐시해서 오프라인에서도 정리 순서를 볼 수 있게 합니다.
-const CACHE = "home-planner-v3";
+const CACHE = "home-planner-v4";
 const SHELL = ["./", "index.html", "style.css", "app.js", "plan-data.js", "manifest.json", "icon.svg"];
 
 self.addEventListener("install", (e) => {
